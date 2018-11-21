@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
   data: any[];
   pageInfo1 = new PageInfo({size: 10});
   pageInfo2 = new PageInfo({size: 10});
+  pageInfo3 = new PageInfo({size: 10});
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -26,6 +27,14 @@ export class HomeComponent implements OnInit {
       this.pageInfo2.page = page;
       this.getData(page);
     });
+
+    setTimeout(() => {
+      this.pageInfo3.count = 100;
+    }, 2000);
+
+    setTimeout(() => {
+      this.pageInfo3.page = 5;
+    }, 1000);
   }
 
   pageChanged($event) {
