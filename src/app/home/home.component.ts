@@ -10,9 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   data: any[];
-  page: number;
-  count: number;
-  size = 10;
+  pageInfo1 = new PageInfo({size: 10});
+  pageInfo2 = new PageInfo({size: 10});
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -21,8 +20,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(q => {
-      this.page = q.page ? +q.page : 1;
-      this.getData();
+      const page = q.page ? +q.page : 1;
+
+      // Update place
+      this.pageInfo2.page = page;
+      this.getData(page);
     });
   }
 
@@ -32,11 +34,26 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private getData() {
+  private getData(page) {
     this.http.get('https://jsonplaceholder.typicode.com/posts').subscribe((data: any[]) => {
-      this.data = data.slice((this.page - 1) * this.size, this.page * this.size);
-      this.count = data.length;
+      // Update count and page in same place => work
+      this.pageInfo1.count = data.length;
+      this.pageInfo1.page = page;
+
+      // Update count
+      this.pageInfo2.count = data.length;
+
+      this.data = data.slice((this.pageInfo1.page - 1) * this.pageInfo1.size, this.pageInfo1.page * this.pageInfo1.size);
     });
   }
 
+}
+
+export class PageInfo {
+  constructor(parameters?: Partial<PageInfo>) {
+    Object.assign(this, parameters);
+  }
+  page: number;
+  size: number;
+  count: number;
 }

@@ -2,6 +2,12 @@
   <li *ngFor="let item of data">{{item.id}} - {{item.title}}</li>
 </ul>
 
-<pagination [ngModel]="page"
+<h3>This work</h3>
+<pagination [ngModel]="pageInfo1.page"
             (pageChanged)="pageChanged($event)"
-            [totalItems]="count"></pagination>
+            [totalItems]="pageInfo1.count"></pagination>
+
+<h3>This not work</h3>
+<pagination [ngModel]="pageInfo2.page"
+            [totalItems]="pageInfo2.count"
+            (pageChanged)="pageChanged($event)"></pagination>
